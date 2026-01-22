@@ -138,6 +138,7 @@ export default function AttendancePage() {
 
   const presentCount = Object.values(present).filter(p => p).length
   const absentCount = students.length - presentCount
+  const todayLabel = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
 
   return (
     <div className="space-y-6">
@@ -152,22 +153,6 @@ export default function AttendancePage() {
       </div>
 
       {/* Role-Based Access Control */}
-      {role === 'parent' && (
-        <Card className="border-purple-200 bg-purple-50">
-          <CardContent className="pt-6">
-            <div className="flex items-start gap-3">
-              <AlertCircle className="w-5 h-5 text-purple-600 mt-0.5" />
-              <div>
-                <h3 className="font-semibold text-purple-900">Parent View</h3>
-                <p className="text-sm text-purple-700 mt-1">
-                  You can view your child's attendance record.
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
       {role === 'admin' && (
         <Card className="border-blue-200 bg-blue-50">
           <CardContent className="pt-6">
@@ -177,22 +162,6 @@ export default function AttendancePage() {
                 <h3 className="font-semibold text-blue-900">View Only Mode</h3>
                 <p className="text-sm text-blue-700 mt-1">
                   You can monitor attendance data. Only teachers can mark attendance.
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {role === 'parent' && (
-        <Card className="border-purple-200 bg-purple-50">
-          <CardContent className="pt-6">
-            <div className="flex items-start gap-3">
-              <AlertCircle className="w-5 h-5 text-purple-600 mt-0.5" />
-              <div>
-                <h3 className="font-semibold text-purple-900">Parent View</h3>
-                <p className="text-sm text-purple-700 mt-1">
-                  You can view your child's attendance record.
                 </p>
               </div>
             </div>
@@ -287,9 +256,9 @@ export default function AttendancePage() {
                             <div className="space-y-2 text-sm">
                               <p><strong>Roll No:</strong> {students[0].roll}</p>
                               <p><strong>Name:</strong> {students[0].name}</p>
-                              <p><strong>Status:</strong> <span className={present[students[0].roll] ? 'text-green-600 font-semibold' : 'text-red-600 font-semibold'}>
-                                {present[students[0].roll] ? 'Present' : 'Absent'}
-                              </span></p>
+                              <p><strong>Status ({todayLabel}):</strong> <span className={present[students[0].roll] ? 'text-green-600 font-semibold' : 'text-red-600 font-semibold'}>
+                                  {present[students[0].roll] ? 'Present' : 'Absent'}
+                                </span></p>
                             </div>
                           </div>
 
@@ -309,9 +278,9 @@ export default function AttendancePage() {
                               <p><strong>Roll No:</strong> {students[0].roll}</p>
                               <p><strong>Name:</strong> {students[0].name}</p>
                               <p><strong>Class:</strong> {students[0].class}-{students[0].section}</p>
-                              <p><strong>Status:</strong> <span className={present[students[0].roll] ? 'text-green-600 font-semibold' : 'text-red-600 font-semibold'}>
-                                {present[students[0].roll] ? 'Present' : 'Absent'}
-                              </span></p>
+                              <p><strong>Status ({todayLabel}):</strong> <span className={present[students[0].roll] ? 'text-green-600 font-semibold' : 'text-red-600 font-semibold'}>
+                                  {present[students[0].roll] ? 'Present' : 'Absent'}
+                                </span></p>
                             </div>
                           </div>
 

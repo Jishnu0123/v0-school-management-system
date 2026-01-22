@@ -127,6 +127,21 @@ export default function StudentsPage() {
     const headerTitle = role === 'parent' ? 'My Child\'s Profile' : 'My Classes'
     const headerIcon = role === 'parent' ? <User className="w-5 h-5" /> : <BookOpen className="w-5 h-5" />
 
+    if (!myProfile) {
+      return (
+        <div className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-balance">No profile found</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">We could not find a profile for this account.</p>
+            </CardContent>
+          </Card>
+        </div>
+      )
+    }
+
     return (
       <div className="space-y-6">
         <Card>
@@ -135,29 +150,43 @@ export default function StudentsPage() {
               {headerIcon}
               {headerTitle}
             </CardTitle>
-            <Button variant="outline" onClick={() => setShowMyClasses(!showMyClasses)}>
-              {showMyClasses ? 'Hide' : 'View'} {role === 'parent' ? 'Details' : 'Classes'}
-            </Button>
+            {role === 'student' && (
+              <Button variant="outline" onClick={() => setShowMyClasses(!showMyClasses)}>
+                {showMyClasses ? 'Hide' : 'View'} Classes
+              </Button>
+            )}
           </CardHeader>
-          {showMyClasses && (
-            <CardContent>
+          <CardContent>
+            {role === 'parent' ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {dummyStudentClasses.map((classItem, idx) => (
-                  <Card key={idx} className="border-l-4 border-l-blue-500">
-                    <CardContent className="pt-4">
-                      <h4 className="font-semibold mb-2">{classItem.name}</h4>
-                      <div className="space-y-1 text-sm text-muted-foreground">
-                        <p><strong>Teacher:</strong> {classItem.teacher}</p>
-                        <p><strong>Time:</strong> {classItem.time}</p>
-                        <p><strong>Room:</strong> {classItem.room}</p>
-                        <p><strong>Recent Score:</strong> <span className="text-green-600 font-semibold">{classItem.marks}%</span></p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+                <p className="text-sm"><strong>Name:</strong> {myProfile.name}</p>
+                <p className="text-sm"><strong>Roll No:</strong> {myProfile.roll}</p>
+                <p className="text-sm"><strong>Class:</strong> {myProfile.class}-{myProfile.section}</p>
+                <p className="text-sm"><strong>Attendance:</strong> {myProfile.attendance}</p>
+                <p className="text-sm"><strong>Email:</strong> {myProfile.email}</p>
+                <p className="text-sm"><strong>Phone:</strong> {myProfile.phone}</p>
+                <p className="text-sm"><strong>Address:</strong> {myProfile.address}</p>
               </div>
-            </CardContent>
-          )}
+            ) : (
+              showMyClasses && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {dummyStudentClasses.map((classItem, idx) => (
+                    <Card key={idx} className="border-l-4 border-l-blue-500">
+                      <CardContent className="pt-4">
+                        <h4 className="font-semibold mb-2">{classItem.name}</h4>
+                        <div className="space-y-1 text-sm text-muted-foreground">
+                          <p><strong>Teacher:</strong> {classItem.teacher}</p>
+                          <p><strong>Time:</strong> {classItem.time}</p>
+                          <p><strong>Room:</strong> {classItem.room}</p>
+                          <p><strong>Recent Score:</strong> <span className="text-green-600 font-semibold">{classItem.marks}%</span></p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              )
+            )}
+          </CardContent>
         </Card>
       </div>
     )
