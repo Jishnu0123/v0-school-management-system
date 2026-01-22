@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -9,7 +10,15 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 export default function LoginPage() {
-  const [role, setRole] = useState<string>("Admin")
+  const router = useRouter()
+  const [role, setRole] = useState<string>("admin")
+
+  const handleLogin = () => {
+    // Store role in localStorage
+    localStorage.setItem('userRole', role)
+    // Redirect to dashboard with role parameter
+    router.push(`/dashboard?role=${role}`)
+  }
 
   const speak = () => {
     try {
@@ -31,7 +40,10 @@ export default function LoginPage() {
     rec.lang = "en-US"
     rec.onresult = (e: any) => {
       const t = e.results[0][0].transcript?.toLowerCase?.() || ""
-      if (t.includes("go to dashboard")) window.location.href = "/dashboard"
+      if (t.includes("go to dashboard")) {
+        localStorage.setItem('userRole', 'admin')
+        window.location.href = "/dashboard"
+      }
     }
     rec.start()
   }
@@ -46,11 +58,11 @@ export default function LoginPage() {
         <CardContent className="space-y-4">
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" placeholder="you@school.gov" />
+            <Input id="email" type="email" placeholder="you@school.gov" defaultValue="admin@school.gov" />
           </div>
           <div className="grid gap-2">
             <Label htmlFor="password">Password</Label>
-            <Input id="password" type="password" placeholder="••••••••" />
+            <Input id="password" type="password" placeholder="••••••••" defaultValue="password" />
           </div>
           <div className="grid gap-2">
             <Label>Role</Label>
@@ -59,14 +71,15 @@ export default function LoginPage() {
                 <SelectValue placeholder="Select role" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="Admin">Admin</SelectItem>
-                <SelectItem value="Teacher">Teacher</SelectItem>
-                <SelectItem value="Student">Student</SelectItem>
+                <SelectItem value="admin">Admin</SelectItem>
+                <SelectItem value="teacher">Teacher</SelectItem>
+                <SelectItem value="student">Student</SelectItem>
+                <SelectItem value="parent">Parent</SelectItem>
               </SelectContent>
             </Select>
           </div>
-          <Button asChild className="w-full">
-            <Link href="/dashboard">Login</Link>
+          <Button onClick={handleLogin} className="w-full">
+            Login
           </Button>
           <div className="flex items-center justify-between pt-1">
             <Button variant="outline" size="sm" onClick={speak} aria-label="Screen reader help">
@@ -75,6 +88,11 @@ export default function LoginPage() {
             <Button variant="secondary" size="sm" onClick={voiceAssist} aria-label="Voice assistance">
               Voice assistance
             </Button>
+          </div>
+          <div className="text-center pt-2">
+            <Link href="/" className="text-sm text-muted-foreground hover:text-primary">
+              Back to Home
+            </Link>
           </div>
         </CardContent>
       </Card>

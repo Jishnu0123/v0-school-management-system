@@ -25,12 +25,12 @@ export default function DashboardContent({ collapsed, setCollapsed, children }: 
   useEffect(() => {
     const savedRole = localStorage.getItem('userRole') as UserRole | null
     const paramRole = searchParams.get('role') as UserRole | null
-    const finalRole = paramRole || savedRole
+    const finalRole = paramRole || savedRole || 'admin' // Default to admin for demo
 
-    if (finalRole) {
-      setRole(finalRole)
-    } else {
-      router.push('/')
+    setRole(finalRole)
+    // Save to localStorage if not already saved
+    if (!savedRole) {
+      localStorage.setItem('userRole', finalRole)
     }
     setMounted(true)
   }, [searchParams, router])

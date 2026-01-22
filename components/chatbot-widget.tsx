@@ -17,7 +17,7 @@ export default function ChatbotWidget({ startOpen = false }: { startOpen?: boole
     {
       role: "assistant",
       content:
-        "Hi! I can help with attendance, exams, and reports. Try: ‘Go to students’, ‘Go to attendance’, or ask a question.",
+        "Hi! I can help with navigation and school management tasks. Try: 'Go to students', 'Go to attendance', 'Go to finance', 'Go to certificates', 'Go to reports', or ask a question.",
     },
   ])
   const [loading, setLoading] = useState(false)
@@ -47,28 +47,78 @@ export default function ChatbotWidget({ startOpen = false }: { startOpen?: boole
     setInput("")
     const lower = content.toLowerCase()
 
+    // Navigation commands
     if (lower.includes("go to students")) {
       router.push("/dashboard/students")
-      const msg = "Navigating to Students."
+      const msg = "Navigating to Students page."
+      setMessages((m) => [...m, { role: "assistant", content: msg }])
+      speak(msg)
+      return
+    }
+    if (lower.includes("go to teachers")) {
+      router.push("/dashboard/teachers")
+      const msg = "Navigating to Teachers page."
       setMessages((m) => [...m, { role: "assistant", content: msg }])
       speak(msg)
       return
     }
     if (lower.includes("go to attendance")) {
       router.push("/dashboard/attendance")
-      const msg = "Navigating to Attendance."
+      const msg = "Navigating to Attendance page."
       setMessages((m) => [...m, { role: "assistant", content: msg }])
       speak(msg)
       return
     }
     if (lower.includes("go to exams") || lower.includes("go to marks")) {
       router.push("/dashboard/exams")
-      const msg = "Navigating to Exams and Marks."
+      const msg = "Navigating to Exams and Marks page."
       setMessages((m) => [...m, { role: "assistant", content: msg }])
       speak(msg)
       return
     }
-    if (lower.includes("go to dashboard")) {
+    if (lower.includes("go to finance") || lower.includes("go to fees")) {
+      router.push("/dashboard/finance")
+      const msg = "Navigating to Finance page."
+      setMessages((m) => [...m, { role: "assistant", content: msg }])
+      speak(msg)
+      return
+    }
+    if (lower.includes("go to certificate")) {
+      router.push("/dashboard/certificates")
+      const msg = "Navigating to Certificates page."
+      setMessages((m) => [...m, { role: "assistant", content: msg }])
+      speak(msg)
+      return
+    }
+    if (lower.includes("go to reports")) {
+      router.push("/dashboard/reports")
+      const msg = "Navigating to Reports page."
+      setMessages((m) => [...m, { role: "assistant", content: msg }])
+      speak(msg)
+      return
+    }
+    if (lower.includes("go to announcements")) {
+      router.push("/dashboard/announcements")
+      const msg = "Navigating to Announcements page."
+      setMessages((m) => [...m, { role: "assistant", content: msg }])
+      speak(msg)
+      return
+    }
+    if (lower.includes("go to profile")) {
+      router.push("/dashboard/profile")
+      const msg = "Navigating to Profile page."
+      setMessages((m) => [...m, { role: "assistant", content: msg }])
+      speak(msg)
+      return
+    }
+    if (lower.includes("go to settings")) {
+      router.push("/dashboard/settings")
+      const msg = "Navigating to Settings page."
+      setMessages((m) => [...m, { role: "assistant", content: msg }])
+      speak(msg)
+      return
+    }
+    if (lower.includes("go to dashboard") || lower.includes("go to home")) {
       router.push("/dashboard")
       const msg = "Navigating to Dashboard."
       setMessages((m) => [...m, { role: "assistant", content: msg }])

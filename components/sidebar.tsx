@@ -13,6 +13,10 @@ import {
   Megaphone,
   ChevronLeft,
   Bot,
+  UserCircle,
+  Settings,
+  DollarSign,
+  Award,
 } from "lucide-react"
 import { usePathname } from "next/navigation"
 
@@ -22,9 +26,13 @@ const items = [
   { href: "/dashboard/teachers", label: "Teachers", icon: UserRound },
   { href: "/dashboard/attendance", label: "Attendance", icon: ClipboardList },
   { href: "/dashboard/exams", label: "Exams & Marks", icon: FileBarChart2 },
+  { href: "/dashboard/finance", label: "Finance", icon: DollarSign },
+  { href: "/dashboard/certificates", label: "Certificates", icon: Award },
   { href: "/dashboard/reports", label: "Reports", icon: FileText },
   { href: "/dashboard/announcements", label: "Announcements", icon: Megaphone },
-  { href: "/dashboard/chatbot", label: "Chatbot", icon: Bot }, // new item
+  { href: "/dashboard/chatbot", label: "Chatbot", icon: Bot },
+  { href: "/dashboard/profile", label: "Profile", icon: UserCircle },
+  { href: "/dashboard/settings", label: "Settings", icon: Settings },
 ]
 
 export function Sidebar({

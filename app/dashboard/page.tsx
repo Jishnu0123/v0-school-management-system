@@ -1,6 +1,7 @@
 'use client'
 
 import { useSearchParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { MetricCard } from '@/components/metric-card'
 import { AttendanceTrend } from '@/components/charts/attendance-trend'
 import { PerformanceChart } from '@/components/charts/performance-chart'
@@ -8,11 +9,14 @@ import { Suspense } from 'react'
 import type { UserRole } from '@/lib/role-context'
 import Loading from './loading'
 
-function AdminDashboard() {
+function AdminDashboard({ name }: { name: string }) {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-foreground">Admin Dashboard</h1>
+        <div>
+          <p className="text-sm text-muted-foreground">Welcome back, {name}</p>
+          <h1 className="text-3xl font-bold text-foreground">Admin Dashboard</h1>
+        </div>
         <span className="text-xs font-medium px-3 py-1 rounded-full bg-primary/10 text-primary">
           Full System Access
         </span>
@@ -33,11 +37,14 @@ function AdminDashboard() {
   )
 }
 
-function TeacherDashboard() {
+function TeacherDashboard({ name }: { name: string }) {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-foreground">Teacher Dashboard</h1>
+        <div>
+          <p className="text-sm text-muted-foreground">Welcome back, {name}</p>
+          <h1 className="text-3xl font-bold text-foreground">Teacher Dashboard</h1>
+        </div>
         <span className="text-xs font-medium px-3 py-1 rounded-full bg-secondary/10 text-secondary">
           Class Access Only
         </span>
@@ -58,20 +65,23 @@ function TeacherDashboard() {
   )
 }
 
-function StudentDashboard() {
+function StudentDashboard({ name }: { name: string }) {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-foreground">Student Dashboard</h1>
+        <div>
+          <p className="text-sm text-muted-foreground">Welcome back, {name}</p>
+          <h1 className="text-3xl font-bold text-foreground">Student Dashboard</h1>
+        </div>
         <span className="text-xs font-medium px-3 py-1 rounded-full bg-accent/10 text-accent">
           Read-only Access
         </span>
       </div>
 
       <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <MetricCard title="Attendance %" value="94%" hint="Current semester" />
+        <MetricCard title="Attendance %" value="94%" hint="Current year" />
         <MetricCard title="Upcoming Exams" value="5" hint="Next 30 days" />
-        <MetricCard title="Average Score" value="87%" hint="Overall GPA" />
+        <MetricCard title="Average Score" value="87%" hint="Overall score" />
         <MetricCard title="Skill Progress" value="6/8" hint="Completed" />
       </section>
 
@@ -83,11 +93,14 @@ function StudentDashboard() {
   )
 }
 
-function ParentDashboard() {
+function ParentDashboard({ name }: { name: string }) {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-foreground">Parent Dashboard</h1>
+        <div>
+          <p className="text-sm text-muted-foreground">Welcome back, {name}</p>
+          <h1 className="text-3xl font-bold text-foreground">Parent Dashboard</h1>
+        </div>
         <span className="text-xs font-medium px-3 py-1 rounded-full bg-secondary/10 text-secondary">
           Child Data Only
         </span>
@@ -110,21 +123,28 @@ function ParentDashboard() {
 
 function DashboardContent() {
   const searchParams = useSearchParams()
+  const [name, setName] = useState('User')
   const role = (searchParams.get('role') || localStorage.getItem('userRole')) as UserRole | null
+
+  useEffect(() => {
+    const storedName = localStorage.getItem('userName') || localStorage.getItem('studentName')
+    const fallback = role === 'teacher' ? 'Teacher' : role === 'student' ? 'Student' : role === 'parent' ? 'Parent' : 'Admin'
+    setName(storedName || fallback)
+  }, [role])
 
   if (!role) return null
 
   switch (role) {
     case 'admin':
-      return <AdminDashboard />
+      return <AdminDashboard name={name} />
     case 'teacher':
-      return <TeacherDashboard />
+      return <TeacherDashboard name={name} />
     case 'student':
-      return <StudentDashboard />
+      return <StudentDashboard name={name} />
     case 'parent':
-      return <ParentDashboard />
+      return <ParentDashboard name={name} />
     default:
-      return <AdminDashboard />
+      return <AdminDashboard name={name} />
   }
 }
 
